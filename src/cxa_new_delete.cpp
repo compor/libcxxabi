@@ -195,6 +195,31 @@ operator delete[] (void* ptr, const std::nothrow_t&)
     ::operator delete[](ptr);
 }
 
+// C++14 additional delete operators
+#if __cplusplus >= 201402L
+__attribute__((__weak__, __visibility__("default")))
+void operator delete(void * ptr, std::size_t)
+#if __has_feature(cxx_noexcept)
+    noexcept
+#else
+    throw()
+#endif
+{
+	::operator delete(ptr);
+}
+
+__attribute__((__weak__, __visibility__("default")))
+void operator delete[](void * ptr, std::size_t)
+#if __has_feature(cxx_noexcept)
+    noexcept
+#else
+    throw()
+#endif
+{
+	::operator delete(ptr);
+}
+#endif
+
 namespace std
 {
 
